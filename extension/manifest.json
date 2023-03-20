@@ -1,0 +1,18 @@
+{
+  "manifest_version": 3,
+  "name": "YouTube Music RPC",
+  "description": "Show what you're listening to on YouTube Music on Discord",
+  "version": "1.0",
+  "author": "DjDeveloper",
+  "icons": {
+    "16": "icon16.png",
+    "48": "icon48.png"
+  },
+  "content_scripts": [
+    {
+      "matches": ["https://music.youtube.com/*"],
+      "js": ["content.js"],
+      "run_at": "document_end"
+    }
+  ]
+}
