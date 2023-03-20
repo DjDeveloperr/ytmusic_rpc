@@ -13,18 +13,35 @@ const DEFAULT_OPTIONS = {
   },
 };
 
+let timer: number | undefined;
+
 async function handleHttp(conn: Deno.Conn) {
   for await (const e of Deno.serveHttp(conn)) {
     try {
       const url = new URL(e.request.url);
-      console.log(`${e.request.method} ${url.pathname}`);
       if (url.pathname === "/activity" && e.request.method === "POST") {
         const body = await e.request.json();
         const payload = await client.setActivity(body);
         e.respondWith(Response.json(payload, DEFAULT_OPTIONS));
+        if (timer) {
+          clearTimeout(timer);
+        }
+        timer = setTimeout(
+          () => {
+            timer = undefined;
+            client.clearActivity();
+          },
+          body.timestamps?.end
+            ? Math.max(0, body.timestamps?.end - Date.now())
+            : 5 * 60 * 1000,
+        );
       } else if (
         url.pathname === "/activity" && e.request.method === "DELETE"
       ) {
+        if (timer) {
+          clearTimeout(timer);
+          timer = undefined;
+        }
         await client.clearActivity();
         e.respondWith(
           new Response(null, DEFAULT_OPTIONS),

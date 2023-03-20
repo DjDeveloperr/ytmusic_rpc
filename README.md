@@ -1,5 +1,7 @@
 # YouTube Music Discord RPC
 
+![screenshot](./screenshots/1.png)
+
 Discord Rich Presence for YouTube Music.
 
 Consists of two components:
@@ -25,6 +27,8 @@ Run this command to start the web server from the root of the repository:
 ```sh
 deno run -A --unstable server.ts
 ```
+
+TODO: Add instructions for running the server as a service that starts on boot.
 
 ### Chrome/Edge extension
 
